@@ -176,8 +176,14 @@ def menuLoop(screen):
 
         screen.fill(backgroundColorWhenWaiting)
 
-        # WRITE NEW GAME and RESUME GAME on center of screen.
+        # WRITE on Menu  screen.
         font = pygame.font.Font(None, 64)
+
+        text = font.render("TapLearn", 1, textColorForCorrectLabel)
+        pos = text.get_rect()
+        pos.centerx = screen.get_rect().centerx  
+        pos.centery = 100        
+        screen.blit(text, pos)
 
         text = font.render("NEW GAME", 1, textColorForCorrectLabel)
         pos = text.get_rect()
