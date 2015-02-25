@@ -175,13 +175,21 @@ def menuLoop(screen):
                 android.wait_for_resume()
 
         screen.fill(backgroundColorWhenWaiting)
-        # WRITE START on center of screen.
+
+        # WRITE NEW GAME and RESUME GAME on center of screen.
         font = pygame.font.Font(None, 64)
-        text = font.render("START", 1, textColorForCorrectLabel)
+
+        text = font.render("NEW GAME", 1, textColorForCorrectLabel)
         pos = text.get_rect()
         pos.centerx = screen.get_rect().centerx  
-        pos.centery = screen.get_rect().centery        
+        pos.centery = screen.get_rect().centery-100        
         screen.blit(text, pos)
+
+        # text = font.render("RESUME GAME", 1, textColorForCorrectLabel)
+        # pos = text.get_rect()
+        # pos.centerx = screen.get_rect().centerx  
+        # pos.centery = screen.get_rect().centery+100        
+        # screen.blit(text, pos)
 
         # Blit everything to the screen
         screen.blit(screen, (0, 0))
