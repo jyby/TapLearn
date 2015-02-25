@@ -55,27 +55,8 @@ def noisyOperation(x, y):
         error = random.choice([-1,1])
         return random.choice([Operation((x+error),y),Operation(x,(y+error)),Operation(x,y+error)])
 
-# Main program 
-TIMEREVENT = pygame.USEREVENT    
-def main():
-    """Main function of the game, directly called by Android."""
-
-    # PyGame initialisation
-    pygame.init()
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption('TapLearn: Prototype '+str(VERSION))
-    pygame.time.set_timer(TIMEREVENT, 1000 / FPS)
-
-    # PyGame Android initialisation
-    if android:
-        android.init()
-
-    # SETUP for both Linux and Android:
-    if android:
-        android.map_key(android.KEYCODE_BACK, pygame.K_ESCAPE)
-        print("UNDER ANDROID: Type 'BACK' to escape")
-    print("UNDER LINUX: Type 'escape' to escape")
-
+    
+def gameLoop(screen):
     # Graphic preparation
     color = backgroundColorWhenWaiting
     font = pygame.font.Font(None, 64)
@@ -91,7 +72,6 @@ def main():
     number_of_incorrect_answers = 0
     number_of_questions_asked = 1
     list_of_mistakes = []
-
     while time_remaining > 0:
 
         ev = pygame.event.wait()
@@ -174,8 +154,6 @@ def main():
         # the game.
         elif ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
             break
-
-    print("GAME OVER")
     print("Nb of questions asked: "+str(number_of_questions_asked))
     print("Nb of questions not answered: "+str(number_of_questions_asked-number_of_incorrect_answers-number_of_correct_answers))
     print("Nb of correct answers: "+str(number_of_correct_answers))
@@ -183,6 +161,70 @@ def main():
     print("Predicates to review: ")
     for predicate,comment in list_of_mistakes:
         print("When asked '"+predicate+"', you should answer '"+comment+"'.")
+
+
+def menuLoop(screen):
+    mode = "waiting"
+
+    while mode == "waiting":
+
+        ev = pygame.event.wait()
+        # Android-specific:
+        if android:
+            if android.check_pause():
+                android.wait_for_resume()
+
+        screen.fill(backgroundColorWhenWaiting)
+        # WRITE START on center of screen.
+        font = pygame.font.Font(None, 64)
+        text = font.render("START", 1, textColorForCorrectLabel)
+        pos = text.get_rect()
+        pos.centerx = screen.get_rect().centerx  
+        pos.centery = screen.get_rect().centery        
+        screen.blit(text, pos)
+
+        # Blit everything to the screen
+        screen.blit(screen, (0, 0))
+        pygame.display.flip()
+            
+        # When the touchscreen or a key is pressed,
+        # start the game
+        if (ev.type == pygame.MOUSEBUTTONDOWN) or (ev.type == pygame.KEYDOWN and ev.key != pygame.K_ESCAPE):
+            mode = "play"
+        # When the user hits back, ESCAPE is sent. Handle it and end
+        # the game.
+        elif ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+            mode = "exit"
+    return mode
+            
+# Main program 
+TIMEREVENT = pygame.USEREVENT    
+def main():
+    """Main function of the game, directly called by Android."""
+
+    # PyGame initialisation
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption('TapLearn: Prototype '+str(VERSION))
+    pygame.time.set_timer(TIMEREVENT, 1000 / FPS)
+
+    # PyGame Android initialisation
+    if android:
+        android.init()
+
+    # SETUP for both Linux and Android:
+    if android:
+        android.map_key(android.KEYCODE_BACK, pygame.K_ESCAPE)
+        print("UNDER ANDROID: Type 'BACK' to escape")
+    print("UNDER LINUX: Type 'escape' to escape")
+
+    mode="play"
+    while mode=="play":
+        mode = menuLoop(screen)
+        if mode != "exit":
+            gameLoop(screen)
+
+    print("GAME (is) OVER")
 
         
 # This isn't run on Android.
