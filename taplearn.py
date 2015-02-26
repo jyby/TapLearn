@@ -1,17 +1,51 @@
-"""TapLearn, by Jeremy "Le JyBy" Barbay.
+"""
+TapLearn v1.0
 
 By the end of the first phase of its development, <<<TapLearn>>> should be a generic example of pedagogical application with a touch interface, to be used to study the effect of various features on both persistence and learning. In its most basic version, the application downloads a sequence of predicates from a server, present them to the learner in a random order, each to be validated or refuted by the learner, gives feedback to the user and submits the user's answers to a central server for later studies. The features envisioned include the addition of animations, colors, sounds, spaced memorization techniques. The studies envisioned include the effect of those features on <<<persistence>>> (how frequently and how long the learner uses the application) and <<<learning>>> (how fast the learner progresses in his/her learning).
+
+by Jeremy "Le JyBy" Barbay.
+
+
+
+Simplified BSD License:
+
+Copyright 2015 Jeremy Barbay. 
+
+Redistribution and use in source and binary forms, with or without modification, are
+permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this list of
+      conditions and the following disclaimer.
+
+   2. Redistributions in binary form must reproduce the above copyright notice, this list
+      of conditions and the following disclaimer in the documentation and/or other materials
+      provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY Jeremy Barbay ''AS IS'' AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Jeremy Barbay OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The views and conclusions contained in the software and documentation are those of the
+authors and should not be interpreted as representing official policies, either expressed
+or implied, of Jeremy Barbay.
 """
 
 VERSION = 1
 
 import pygame
-import random
-import sys
+import pygbutton
 try:
     import android
 except ImportError:
     android = None
+import random
+import sys
 
 # Appearance
 FPS = 30 # Number of frames per second
