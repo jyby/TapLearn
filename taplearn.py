@@ -56,6 +56,7 @@ backgroundColorWhenIncorrect = (255, 0, 0, 255)
 textColorForQuestion = (10, 10, 10)
 textColorForCorrectLabel = (10, 210, 10)
 textColorForIncorrectLabel = (210, 10, 10)
+textColorForMenuEntry = (10, 210, 10)
 
 # Difficulty
 TIME_REWARD = 30
@@ -107,7 +108,8 @@ class Game:
         gameStats += "Predicates to review: \n"
         for predicate,comment in self.list_of_mistakes:
             gameStats += "When asked '"+predicate+"', you should answer '"+comment+"'.\n"        
-    
+        return gameStats
+            
 def gameLoop(screen,game):
     # Graphic preparation
     color = backgroundColorWhenWaiting
@@ -116,7 +118,6 @@ def gameLoop(screen,game):
 
     # Choose a first question:
     (question, correctness, comment) = newQuestion()
-    visibility_of_comment = False
 
     while game.time_remaining > 0:
 
@@ -228,7 +229,7 @@ def menuLoop(screen,game):
         screen.blit(logoTap, button_logo)
         cursor_y += button_logo.height
         
-        text_new_game = font.render("NEW GAME", 1, textColorForCorrectLabel)
+        text_new_game = font.render("NEW GAME", 1, textColorForMenuEntry)
         button_new_game = text_new_game.get_rect()
         button_new_game.centerx = screen.get_rect().centerx  
         button_new_game.top = cursor_y
@@ -236,14 +237,21 @@ def menuLoop(screen,game):
         cursor_y += button_new_game.height
 
         if(game):
-            text_resume_game = font.render("RESUME GAME", 1, textColorForCorrectLabel)
+            text_resume_game = font.render("RESUME GAME", 1, textColorForMenuEntry)
             button_resume_game = text_resume_game.get_rect()
             button_resume_game.centerx = screen.get_rect().centerx  
             button_resume_game.top = cursor_y
             screen.blit(text_resume_game, button_resume_game)
             cursor_y += button_resume_game.height
 
-        text_quit = font.render("QUIT", 1, textColorForCorrectLabel)
+            text_print_stats = font.render("STATS", 1, textColorForMenuEntry)
+            button_print_stats = text_print_stats.get_rect()
+            button_print_stats.centerx = screen.get_rect().centerx  
+            button_print_stats.top = cursor_y
+            screen.blit(text_print_stats, button_print_stats)
+            cursor_y += button_print_stats.height
+
+        text_quit = font.render("QUIT", 1, textColorForMenuEntry)
         button_quit = text_quit.get_rect()
         button_quit.centerx = screen.get_rect().centerx  
         button_quit.top = cursor_y
@@ -259,6 +267,8 @@ def menuLoop(screen,game):
             mode = "play"
         elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_resume_game.collidepoint(pygame.mouse.get_pos()))):
             mode = "play"
+        elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_print_stats.collidepoint(pygame.mouse.get_pos()))):
+            print(str(game.stats()))
         elif ((ev.type == pygame.MOUSEBUTTONDOWN and  button_quit.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE)):
             mode = "exit"
     return mode, game
