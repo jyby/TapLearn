@@ -243,20 +243,23 @@ def menuLoop(screen,game):
             screen.blit(text_resume_game, button_resume_game)
             cursor_y += button_resume_game.height
 
+        text_quit = font.render("QUIT", 1, textColorForCorrectLabel)
+        button_quit = text_quit.get_rect()
+        button_quit.centerx = screen.get_rect().centerx  
+        button_quit.top = cursor_y
+        screen.blit(text_quit, button_quit)
+        cursor_y += button_quit.height
+            
         # Blit everything to the screen
         screen.blit(screen, (0, 0))
         pygame.display.flip()
             
-        # When the touchscreen or a key is pressed,
-        # start the game
         if (ev.type == pygame.MOUSEBUTTONDOWN and  button_new_game.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key != pygame.K_ESCAPE):
             game = Game();
             mode = "play"
         elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_resume_game.collidepoint(pygame.mouse.get_pos()))):
             mode = "play"
-        # When the user hits back, ESCAPE is sent. Handle it and end
-        # the game.
-        elif ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
+        elif ((ev.type == pygame.MOUSEBUTTONDOWN and  button_quit.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE)):
             mode = "exit"
     return mode, game
             
