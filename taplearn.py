@@ -39,7 +39,6 @@ or implied, of Jeremy Barbay.
 VERSION = 1
 
 import pygame
-# import pygbutton
 try:
     import android
 except ImportError:
@@ -89,8 +88,26 @@ def noisyOperation(x, y):
         error = random.choice([-1,1])
         return random.choice([Operation((x+error),y),Operation(x,(y+error)),Operation(x,y+error)])
 
+class Game:
+    def __init__(self):
+        self.time_remaining = HEIGHT
+        self.time_remaining = HEIGHT
+        self.number_of_correct_answers = 0
+        self.number_of_incorrect_answers = 0
+        self.number_of_questions_asked = 1
+        self.list_of_mistakes = []
+
+    def stats(self):
+        gameStats = ""
+        gameStats += "Nb of questions asked: "+str(self.number_of_questions_asked)+"\n"
+        gameStats += "Nb of questions not answered: "+str(self.number_of_questions_asked-self.number_of_incorrect_answers-self.number_of_correct_answers)+"\n"
+        gameStats += "Nb of correct answers: "+str(self.number_of_correct_answers)+"\n"
+        gameStats += "Nb of incorrect answers: "+str(self.number_of_incorrect_answers)+"\n"
+        gameStats += "Predicates to review: \n"
+        for predicate,comment in self.list_of_mistakes:
+            gameStats += "When asked '"+predicate+"', you should answer '"+comment+"'.\n"        
     
-def gameLoop(screen):
+def gameLoop(screen,game):
     # Graphic preparation
     color = backgroundColorWhenWaiting
     font = pygame.font.Font(None, 64)
@@ -100,13 +117,7 @@ def gameLoop(screen):
     (question, correctness, comment) = newQuestion()
     visibility_of_comment = False
 
-    # Initialize the game:
-    time_remaining = HEIGHT
-    number_of_correct_answers = 0
-    number_of_incorrect_answers = 0
-    number_of_questions_asked = 1
-    list_of_mistakes = []
-    while time_remaining > 0:
+    while game.time_remaining > 0:
 
         ev = pygame.event.wait()
         # Android-specific:
@@ -117,7 +128,7 @@ def gameLoop(screen):
         (x,y) = pygame.mouse.get_pos()
         # Draw the screen based on the timer.
         if ev.type == TIMEREVENT:
-            time_remaining -= 1
+            game.time_remaining -= 1
             screen.fill(color)
             # WRITE True and False on bottom of screen.
             TRUEtext = LEGENDfont.render("TRUE", 1, textColorForCorrectLabel)
@@ -132,7 +143,7 @@ def gameLoop(screen):
             screen.blit(FALSEtext, FALSEpos)
 
             # Scroll Question getting down
-            POSITION = max(20,HEIGHT-time_remaining)
+            POSITION = max(20,HEIGHT-game.time_remaining)
             text = font.render(question, 1, textColorForQuestion)
             textpos = text.get_rect()
             textpos.centerx = screen.get_rect().centerx
@@ -149,36 +160,36 @@ def gameLoop(screen):
             
         # When the touchscreen or a key is pressed, process the answer
         # take left side as true and right side as false.
-        elif (ev.type == pygame.MOUSEBUTTONDOWN and x>  WIDTH/2) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT):
+        elif (ev.type == pygame.MOUSEBUTTONDOWN and x>WIDTH/2) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT):
             print("Left Click")
             if correctness:
                 print("Correct Answer!")
-                number_of_correct_answers += 1
+                game.number_of_correct_answers += 1
                 color = backgroundColorWhenCorrect
-                time_remaining += TIME_REWARD
+                game.time_remaining += TIME_REWARD
             else:
                 print("INCORRECT Answer!")
                 color = backgroundColorWhenIncorrect
-                number_of_incorrect_answers += 1
-                time_remaining -= TIME_PENALTY
-                list_of_mistakes.append((question,comment))
+                game.number_of_incorrect_answers += 1
+                game.time_remaining -= TIME_PENALTY
+                game.list_of_mistakes.append((question,comment))
             (question, correctness, comment) = newQuestion()
-            number_of_questions_asked += 1
+            game.number_of_questions_asked += 1
         elif (ev.type == pygame.MOUSEBUTTONDOWN and x<=WIDTH/2)  or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_LEFT):
             print("Right Click")
             if not correctness:
                 print("Correct Answer!")
                 color = backgroundColorWhenCorrect
-                number_of_correct_answers += 1
-                time_remaining += TIME_REWARD
+                game.number_of_correct_answers += 1
+                game.time_remaining += TIME_REWARD
             else:
                 print("INCORRECT Answer!")
                 color = backgroundColorWhenIncorrect
-                number_of_incorrect_answers += 1
-                time_remaining -= TIME_PENALTY
-                list_of_mistakes.append((question,comment))
+                game.number_of_incorrect_answers += 1
+                game.time_remaining -= TIME_PENALTY
+                game.list_of_mistakes.append((question,comment))
             (question, correctness, comment) = newQuestion()
-            number_of_questions_asked += 1
+            game.number_of_questions_asked += 1
             
         # When it's released, change back the color of the background 
         elif ev.type == pygame.MOUSEBUTTONUP or ev.type == pygame.KEYUP:
@@ -188,18 +199,15 @@ def gameLoop(screen):
         # the game.
         elif ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
             break
-    print("Nb of questions asked: "+str(number_of_questions_asked))
-    print("Nb of questions not answered: "+str(number_of_questions_asked-number_of_incorrect_answers-number_of_correct_answers))
-    print("Nb of correct answers: "+str(number_of_correct_answers))
-    print("Nb of incorrect answers: "+str(number_of_incorrect_answers))
-    print("Predicates to review: ")
-    for predicate,comment in list_of_mistakes:
-        print("When asked '"+predicate+"', you should answer '"+comment+"'.")
+    if(game.time_remaining <=0):
+        print(game.stats())
+        game = None
+    return game
+    
 
-
-def menuLoop(screen):
+def menuLoop(screen,game):
     mode = "waiting"
-
+    
     while mode == "waiting":
 
         ev = pygame.event.wait()
@@ -213,11 +221,11 @@ def menuLoop(screen):
         # WRITE on Menu  screen.
         font = pygame.font.Font(None, 64)
 
-        text = font.render("TapLearn", 1, textColorForCorrectLabel)
-        pos = text.get_rect()
+        text_title = font.render("TapLearn", 1, textColorForCorrectLabel)
+        pos = text_title.get_rect()
         pos.centerx = screen.get_rect().centerx  
         pos.centery = 100        
-        screen.blit(text, pos)
+        screen.blit(text_title, pos)
 
         text_new_game = font.render("NEW GAME", 1, textColorForCorrectLabel)
         button_new_game = text_new_game.get_rect()
@@ -225,11 +233,12 @@ def menuLoop(screen):
         button_new_game.centery = screen.get_rect().centery-100        
         screen.blit(text_new_game, button_new_game)
 
-        # text = font.render("RESUME GAME", 1, textColorForCorrectLabel)
-        # pos = text.get_rect()
-        # pos.centerx = screen.get_rect().centerx  
-        # pos.centery = screen.get_rect().centery+100        
-        # screen.blit(text, pos)
+        if(game):
+            text_resume_game = font.render("RESUME GAME", 1, textColorForCorrectLabel)
+            button_resume_game = text_resume_game.get_rect()
+            button_resume_game.centerx = screen.get_rect().centerx  
+            button_resume_game.centery = screen.get_rect().centery+100        
+            screen.blit(text_resume_game, button_resume_game)
 
         # Blit everything to the screen
         screen.blit(screen, (0, 0))
@@ -238,12 +247,15 @@ def menuLoop(screen):
         # When the touchscreen or a key is pressed,
         # start the game
         if (ev.type == pygame.MOUSEBUTTONDOWN and  button_new_game.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key != pygame.K_ESCAPE):
+            game = Game();
+            mode = "play"
+        elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_resume_game.collidepoint(pygame.mouse.get_pos()))):
             mode = "play"
         # When the user hits back, ESCAPE is sent. Handle it and end
         # the game.
         elif ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
             mode = "exit"
-    return mode
+    return mode, game
             
 # Main program 
 TIMEREVENT = pygame.USEREVENT    
@@ -267,10 +279,11 @@ def main():
     print("UNDER LINUX: Type 'escape' to escape")
 
     mode="play"
+    game = None
     while mode=="play":
-        mode = menuLoop(screen)
+        mode,game = menuLoop(screen,game)
         if mode != "exit":
-            gameLoop(screen)
+            game = gameLoop(screen,game)
 
     print("GAME (is) OVER")
 
