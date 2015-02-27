@@ -68,6 +68,7 @@ def Operation(x,y):
     return x*y
 operationLabel = "*"
 
+
 def newQuestion():
     """Returns a new question as a pair (predicate, correctness, comment)."""
     x = random.randint(MIN_NUMBER,MAX_NUMBER)
@@ -150,9 +151,6 @@ def gameLoop(screen,game):
             textpos.centery = POSITION
             screen.blit(text, textpos)
 
-            # See logo
-            # screen.blit(logo,textpos)
-
             # Blit everything to the screen
             screen.blit(screen, (0, 0))
             pygame.display.flip()
@@ -221,24 +219,29 @@ def menuLoop(screen,game):
         # WRITE on Menu  screen.
         font = pygame.font.Font(None, 64)
 
-        text_title = font.render("TapLearn", 1, textColorForCorrectLabel)
-        pos = text_title.get_rect()
-        pos.centerx = screen.get_rect().centerx  
-        pos.centery = 100        
-        screen.blit(text_title, pos)
-
+        cursor_y = 0
+        
+        logoTap = pygame.image.load('Logos/logo-TapLearnByJyByWithFinger-Width480.png').convert()
+        button_logo = logoTap.get_rect()
+        button_logo.top = cursor_y
+        button_logo.left = 0
+        screen.blit(logoTap, button_logo)
+        cursor_y += button_logo.height
+        
         text_new_game = font.render("NEW GAME", 1, textColorForCorrectLabel)
         button_new_game = text_new_game.get_rect()
         button_new_game.centerx = screen.get_rect().centerx  
-        button_new_game.centery = screen.get_rect().centery-100        
+        button_new_game.top = cursor_y
         screen.blit(text_new_game, button_new_game)
+        cursor_y += button_new_game.height
 
         if(game):
             text_resume_game = font.render("RESUME GAME", 1, textColorForCorrectLabel)
             button_resume_game = text_resume_game.get_rect()
             button_resume_game.centerx = screen.get_rect().centerx  
-            button_resume_game.centery = screen.get_rect().centery+100        
+            button_resume_game.top = cursor_y
             screen.blit(text_resume_game, button_resume_game)
+            cursor_y += button_resume_game.height
 
         # Blit everything to the screen
         screen.blit(screen, (0, 0))
