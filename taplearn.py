@@ -39,7 +39,7 @@ or implied, of Jeremy Barbay.
 VERSION = 1
 
 import pygame
-import pygbutton
+# import pygbutton
 try:
     import android
 except ImportError:
@@ -219,11 +219,11 @@ def menuLoop(screen):
         pos.centery = 100        
         screen.blit(text, pos)
 
-        text = font.render("NEW GAME", 1, textColorForCorrectLabel)
-        pos = text.get_rect()
-        pos.centerx = screen.get_rect().centerx  
-        pos.centery = screen.get_rect().centery-100        
-        screen.blit(text, pos)
+        text_new_game = font.render("NEW GAME", 1, textColorForCorrectLabel)
+        button_new_game = text_new_game.get_rect()
+        button_new_game.centerx = screen.get_rect().centerx  
+        button_new_game.centery = screen.get_rect().centery-100        
+        screen.blit(text_new_game, button_new_game)
 
         # text = font.render("RESUME GAME", 1, textColorForCorrectLabel)
         # pos = text.get_rect()
@@ -237,7 +237,7 @@ def menuLoop(screen):
             
         # When the touchscreen or a key is pressed,
         # start the game
-        if (ev.type == pygame.MOUSEBUTTONDOWN) or (ev.type == pygame.KEYDOWN and ev.key != pygame.K_ESCAPE):
+        if (ev.type == pygame.MOUSEBUTTONDOWN and  button_new_game.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key != pygame.K_ESCAPE):
             mode = "play"
         # When the user hits back, ESCAPE is sent. Handle it and end
         # the game.
