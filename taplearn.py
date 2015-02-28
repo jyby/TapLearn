@@ -223,13 +223,20 @@ def menuLoop(screen,game):
 
         cursor_y = 0
         
-        logoTap = pygame.image.load('Logos/logo-TapLearnByJyByWithFinger-Width480.png').convert()
+        logoTap = pygame.image.load('Logos/logo-TapWithFinger.png').convert()
         button_logo = logoTap.get_rect()
         button_logo.top = cursor_y
         button_logo.left = 0
         screen.blit(logoTap, button_logo)
         cursor_y += button_logo.height
         
+        logoLearn = pygame.image.load('Logos/logo-Learn-Width480.png').convert()
+        button_logoLearn = logoLearn.get_rect()
+        button_logoLearn.top = cursor_y
+        button_logoLearn.left = 0
+        screen.blit(logoLearn, button_logoLearn)
+        cursor_y += button_logoLearn.height
+
         text_new_game = font.render("NEW GAME", 1, textColorForMenuEntry)
         button_new_game = text_new_game.get_rect()
         button_new_game.centerx = screen.get_rect().centerx  
@@ -264,6 +271,16 @@ def menuLoop(screen,game):
         screen.blit(text_quit, button_quit)
         cursor_y += button_quit.height
             
+
+        logoSignature = pygame.image.load('Logos/signature-byJyBy-Width480.png').convert()
+        button_logoSignature = logoSignature.get_rect()
+        button_logoSignature.top = cursor_y
+        button_logoSignature.left = 0
+        screen.blit(logoSignature, button_logoSignature)
+        cursor_y += button_logoSignature.height
+
+
+
         # Blit everything to the screen
         screen.blit(screen, (0, 0))
         pygame.display.flip()
