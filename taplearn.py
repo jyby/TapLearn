@@ -57,6 +57,7 @@ textColorForQuestion = (10, 10, 10)
 textColorForCorrectLabel = (10, 210, 10)
 textColorForIncorrectLabel = (210, 10, 10)
 textColorForMenuEntry = (10, 210, 10)
+textColorForDisabledMenuEntry = (210, 255, 210)
 
 # Difficulty
 TIME_REWARD = 30
@@ -238,18 +239,23 @@ def menuLoop(screen,game):
 
         if(game):
             text_resume_game = font.render("RESUME GAME", 1, textColorForMenuEntry)
-            button_resume_game = text_resume_game.get_rect()
-            button_resume_game.centerx = screen.get_rect().centerx  
-            button_resume_game.top = cursor_y
-            screen.blit(text_resume_game, button_resume_game)
-            cursor_y += button_resume_game.height
+        else:
+            text_resume_game = font.render("RESUME GAME", 1, textColorForDisabledMenuEntry)
+        button_resume_game = text_resume_game.get_rect()
+        button_resume_game.centerx = screen.get_rect().centerx  
+        button_resume_game.top = cursor_y
+        screen.blit(text_resume_game, button_resume_game)
+        cursor_y += button_resume_game.height
 
+        if(game):
             text_print_stats = font.render("STATS", 1, textColorForMenuEntry)
-            button_print_stats = text_print_stats.get_rect()
-            button_print_stats.centerx = screen.get_rect().centerx  
-            button_print_stats.top = cursor_y
-            screen.blit(text_print_stats, button_print_stats)
-            cursor_y += button_print_stats.height
+        else:
+            text_print_stats = font.render("STATS", 1, textColorForDisabledMenuEntry)
+        button_print_stats = text_print_stats.get_rect()
+        button_print_stats.centerx = screen.get_rect().centerx  
+        button_print_stats.top = cursor_y
+        screen.blit(text_print_stats, button_print_stats)
+        cursor_y += button_print_stats.height
 
         text_quit = font.render("QUIT", 1, textColorForMenuEntry)
         button_quit = text_quit.get_rect()
