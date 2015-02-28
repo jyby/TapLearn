@@ -241,45 +241,49 @@ def menuLoop(screen,game):
         screen.blit(logoLearn, button_logoLearn)
         cursor_y += button_logoLearn.height
 
-        text_new_game = font.render("NEW GAME", 1, textColorForMenuEntry)
-        button_new_game = text_new_game.get_rect()
+        icon_new_game = pygame.image.load('Buttons/icon-Start-Width480.png').convert()
+        button_new_game = icon_new_game.get_rect()
         button_new_game.centerx = screen.get_rect().centerx  
         button_new_game.top = cursor_y
-        screen.blit(text_new_game, button_new_game)
+        screen.blit(icon_new_game, button_new_game)
+        text_new_game = font.render("NEW", 1, textColorForMenuEntry)
+        rect_new_game =  text_new_game.get_rect()
+        rect_new_game.left = button_new_game.centerx
+        rect_new_game.centery = button_new_game.centery
+        screen.blit(text_new_game, rect_new_game)
         cursor_y += button_new_game.height
 
+        icon_resume = pygame.image.load('Buttons/icon-Pause-Width480.png').convert()
+        button_resume = icon_resume.get_rect()
+        button_resume.centerx = screen.get_rect().centerx  
+        button_resume.top = cursor_y
+        screen.blit(icon_resume, button_resume)
         if(game):
-            text_resume_game = font.render("RESUME GAME", 1, textColorForMenuEntry)
+            text_resume = font.render("RESUME", 1, textColorForMenuEntry)
         else:
-            text_resume_game = font.render("RESUME GAME", 1, textColorForDisabledMenuEntry)
-        button_resume_game = text_resume_game.get_rect()
-        button_resume_game.centerx = screen.get_rect().centerx  
-        button_resume_game.top = cursor_y
-        screen.blit(text_resume_game, button_resume_game)
-        cursor_y += button_resume_game.height
+            text_resume = font.render("RESUME", 1, textColorForDisabledMenuEntry)
+        rect_resume =  text_resume.get_rect()
+        rect_resume.left = button_resume.centerx
+        rect_resume.centery = button_resume.centery
+        screen.blit(text_resume, rect_resume)
+        cursor_y += button_resume.height
 
-        if(game):
-            text_print_stats = font.render("STATS", 1, textColorForMenuEntry)
-        else:
-            text_print_stats = font.render("STATS", 1, textColorForDisabledMenuEntry)
-        button_print_stats = text_print_stats.get_rect()
-        button_print_stats.centerx = screen.get_rect().centerx  
-        button_print_stats.top = cursor_y
-        screen.blit(text_print_stats, button_print_stats)
-        cursor_y += button_print_stats.height
-
-        text_quit = font.render("QUIT", 1, textColorForMenuEntry)
-        button_quit = text_quit.get_rect()
+        icon_quit = pygame.image.load('Buttons/icon-Exit-Width480.png').convert()
+        button_quit = icon_quit.get_rect()
         button_quit.centerx = screen.get_rect().centerx  
         button_quit.top = cursor_y
-        screen.blit(text_quit, button_quit)
-        cursor_y += button_quit.height
-            
+        screen.blit(icon_quit, button_quit)
+        text_quit = font.render("QUIT", 1, textColorForMenuEntry)
+        rect_quit =  text_quit.get_rect()
+        rect_quit.left = button_quit.centerx
+        rect_quit.centery = button_quit.centery
+        screen.blit(text_quit, rect_quit)
+        cursor_y += button_quit.height            
 
-        logoSignature = pygame.image.load('Logos/signature-byJyBy-Width480.png').convert()
+        logoSignature = pygame.image.load('Logos/signature-byJyBy-tiny.png').convert()
         button_logoSignature = logoSignature.get_rect()
-        button_logoSignature.top = cursor_y
-        button_logoSignature.left = 0
+        button_logoSignature.bottom = HEIGHT
+        button_logoSignature.right = WIDTH
         screen.blit(logoSignature, button_logoSignature)
         cursor_y += button_logoSignature.height
 
@@ -293,12 +297,14 @@ def menuLoop(screen,game):
             tapPressed = 1
         elif (ev.type == pygame.MOUSEBUTTONUP) or (ev.type == pygame.KEYUP):
             tapPressed = None
+        elif (ev.type == pygame.MOUSEBUTTONDOWN and  button_logoSignature.collidepoint(pygame.mouse.get_pos())):
+            print("By Jeremy 'Le JyBy' Barbay")
         elif (ev.type == pygame.MOUSEBUTTONDOWN and  button_new_game.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT):
             game = Game();
             mode = "play"
-        elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_resume_game.collidepoint(pygame.mouse.get_pos()))):
+        elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_resume.collidepoint(pygame.mouse.get_pos()))):
             mode = "play"
-        elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_print_stats.collidepoint(pygame.mouse.get_pos()))):
+        elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_logoLearn.collidepoint(pygame.mouse.get_pos()))):
             print(str(game.stats()))
         elif ((ev.type == pygame.MOUSEBUTTONDOWN and  button_quit.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE)):
             mode = "exit"
