@@ -207,7 +207,8 @@ def gameLoop(screen,game):
 
 def menuLoop(screen,game):
     mode = "waiting"
-    
+    tapPressed = None
+
     while mode == "waiting":
 
         ev = pygame.event.wait()
@@ -222,13 +223,16 @@ def menuLoop(screen,game):
         font = pygame.font.Font(None, 64)
 
         cursor_y = 0
-        
-        logoTap = pygame.image.load('Logos/logo-TapWithFinger-Width480.png').convert()
-        button_logo = logoTap.get_rect()
-        button_logo.top = cursor_y
-        button_logo.left = 0
-        screen.blit(logoTap, button_logo)
-        cursor_y += button_logo.height
+
+        if tapPressed:
+            logoTap = pygame.image.load('Logos/logo-TapWithFingerPressed-Width480.png').convert()
+        else:
+            logoTap = pygame.image.load('Logos/logo-TapWithFinger-Width480.png').convert()
+        button_logoTap = logoTap.get_rect()
+        button_logoTap.top = cursor_y
+        button_logoTap.left = 0
+        screen.blit(logoTap, button_logoTap)
+        cursor_y += button_logoTap.height
         
         logoLearn = pygame.image.load('Logos/logo-Learn-Width480.png').convert()
         button_logoLearn = logoLearn.get_rect()
@@ -285,7 +289,11 @@ def menuLoop(screen,game):
         screen.blit(screen, (0, 0))
         pygame.display.flip()
             
-        if (ev.type == pygame.MOUSEBUTTONDOWN and  button_new_game.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key != pygame.K_ESCAPE):
+        if (ev.type == pygame.MOUSEBUTTONDOWN and  button_logoTap.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_DOWN):
+            tapPressed = 1
+        elif (ev.type == pygame.MOUSEBUTTONUP) or (ev.type == pygame.KEYUP):
+            tapPressed = None
+        elif (ev.type == pygame.MOUSEBUTTONDOWN and  button_new_game.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT):
             game = Game();
             mode = "play"
         elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_resume_game.collidepoint(pygame.mouse.get_pos()))):
