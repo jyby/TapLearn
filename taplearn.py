@@ -223,7 +223,7 @@ def menuLoop(screen,game):
 
         cursor_y = 0
         
-        logoTap = pygame.image.load('Logos/logo-TapWithFinger.png').convert()
+        logoTap = pygame.image.load('Logos/logo-TapWithFinger-Width480.png').convert()
         button_logo = logoTap.get_rect()
         button_logo.top = cursor_y
         button_logo.left = 0
