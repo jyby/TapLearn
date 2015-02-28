@@ -106,9 +106,10 @@ class Game:
         gameStats += "Nb of questions not answered: "+str(self.number_of_questions_asked-self.number_of_incorrect_answers-self.number_of_correct_answers)+"\n"
         gameStats += "Nb of correct answers: "+str(self.number_of_correct_answers)+"\n"
         gameStats += "Nb of incorrect answers: "+str(self.number_of_incorrect_answers)+"\n"
-        gameStats += "Predicates to review: \n"
-        for predicate,comment in self.list_of_mistakes:
-            gameStats += "When asked '"+predicate+"', you should answer '"+comment+"'.\n"        
+        if len(self.list_of_mistakes)>0:
+            gameStats += "Predicates to review: \n"
+            for predicate,comment in self.list_of_mistakes:
+                gameStats += "When asked '"+predicate+"', you should answer '"+comment+"'.\n"        
         return gameStats
             
 def gameLoop(screen,game):
