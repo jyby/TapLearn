@@ -99,6 +99,7 @@ class Game:
         self.number_of_incorrect_answers = 0
         self.number_of_questions_asked = 1
         self.list_of_mistakes = []
+        (self.question, self.correctness, self.comment) = newQuestion()
 
     def stats(self):
         gameStats = ""
@@ -117,9 +118,6 @@ def gameLoop(screen,game):
     color = backgroundColorWhenWaiting
     font = pygame.font.Font(None, 64)
     LEGENDfont = pygame.font.Font(None, 72)
-
-    # Choose a first question:
-    (question, correctness, comment) = newQuestion()
 
     while game.time_remaining > 0:
 
@@ -148,7 +146,7 @@ def gameLoop(screen,game):
 
             # Scroll Question getting down
             POSITION = max(20,HEIGHT-game.time_remaining)
-            text = font.render(question, 1, textColorForQuestion)
+            text = font.render(game.question, 1, textColorForQuestion)
             textpos = text.get_rect()
             textpos.centerx = screen.get_rect().centerx
             textpos.centery = POSITION
@@ -163,7 +161,7 @@ def gameLoop(screen,game):
         # take left side as true and right side as false.
         elif (ev.type == pygame.MOUSEBUTTONDOWN and x>WIDTH/2) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT):
             print("Left Click")
-            if correctness:
+            if game.correctness:
                 print("Correct Answer!")
                 game.number_of_correct_answers += 1
                 color = backgroundColorWhenCorrect
@@ -173,12 +171,12 @@ def gameLoop(screen,game):
                 color = backgroundColorWhenIncorrect
                 game.number_of_incorrect_answers += 1
                 game.time_remaining -= TIME_PENALTY
-                game.list_of_mistakes.append((question,comment))
-            (question, correctness, comment) = newQuestion()
+                game.list_of_mistakes.append((game.question,game.comment))
+            (game.question, game.correctness, game.comment) = newQuestion()
             game.number_of_questions_asked += 1
         elif (ev.type == pygame.MOUSEBUTTONDOWN and x<=WIDTH/2)  or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_LEFT):
             print("Right Click")
-            if not correctness:
+            if not game.correctness:
                 print("Correct Answer!")
                 color = backgroundColorWhenCorrect
                 game.number_of_correct_answers += 1
@@ -188,8 +186,8 @@ def gameLoop(screen,game):
                 color = backgroundColorWhenIncorrect
                 game.number_of_incorrect_answers += 1
                 game.time_remaining -= TIME_PENALTY
-                game.list_of_mistakes.append((question,comment))
-            (question, correctness, comment) = newQuestion()
+                game.list_of_mistakes.append((question.question,question.comment))
+            (game.question, game.correctness, game.comment) = newQuestion()
             game.number_of_questions_asked += 1
             
         # When it's released, change back the color of the background 
