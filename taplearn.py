@@ -36,7 +36,7 @@ authors and should not be interpreted as representing official policies, either 
 or implied, of Jeremy Barbay.
 """
 
-VERSION = 1
+VERSION = 2
 
 import pygame
 try:
@@ -133,6 +133,11 @@ def gameLoop(screen,game):
             game.time_remaining -= 1
             screen.fill(color)
             # WRITE True and False on bottom of screen.
+            iconThumbsUpDown = pygame.image.load('Buttons/icons-thumbDownUp-Width480.png').convert()
+            buttonThumbsUpDown = iconThumbsUpDown.get_rect()
+            buttonThumbsUpDown.bottom = HEIGHT
+            buttonThumbsUpDown.centerx = screen.get_rect().centerx
+            screen.blit(iconThumbsUpDown, buttonThumbsUpDown)
             TRUEtext = LEGENDfont.render("TRUE", 1, textColorForCorrectLabel)
             TRUEpos = TRUEtext.get_rect()
             FALSEtext = LEGENDfont.render("FALSE", 1, textColorForIncorrectLabel)
