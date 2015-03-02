@@ -191,7 +191,7 @@ def gameLoop(screen,game):
                 color = backgroundColorWhenIncorrect
                 game.number_of_incorrect_answers += 1
                 game.time_remaining -= TIME_PENALTY
-                game.list_of_mistakes.append((question.question,question.comment))
+                game.list_of_mistakes.append((game.question,game.comment))
             (game.question, game.correctness, game.comment) = newQuestion()
             game.number_of_questions_asked += 1
             
