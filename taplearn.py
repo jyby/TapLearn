@@ -138,16 +138,16 @@ def gameLoop(screen,game):
             buttonThumbsUpDown.bottom = HEIGHT
             buttonThumbsUpDown.centerx = screen.get_rect().centerx
             screen.blit(iconThumbsUpDown, buttonThumbsUpDown)
-            TRUEtext = LEGENDfont.render("TRUE", 1, textColorForCorrectLabel)
-            TRUEpos = TRUEtext.get_rect()
-            FALSEtext = LEGENDfont.render("FALSE", 1, textColorForIncorrectLabel)
-            FALSEpos = TRUEtext.get_rect()
-            TRUEpos.centerx = screen.get_rect().centerx + 100 
-            TRUEpos.centery = HEIGHT - 20
-            FALSEpos.centerx = screen.get_rect().centerx - 100 
-            FALSEpos.centery = HEIGHT - 20
-            screen.blit(TRUEtext, TRUEpos)
-            screen.blit(FALSEtext, FALSEpos)
+            # TRUEtext = LEGENDfont.render("TRUE", 1, textColorForCorrectLabel)
+            # TRUEpos = TRUEtext.get_rect()
+            # FALSEtext = LEGENDfont.render("FALSE", 1, textColorForIncorrectLabel)
+            # FALSEpos = TRUEtext.get_rect()
+            # TRUEpos.centerx = screen.get_rect().centerx + 100 
+            # TRUEpos.centery = HEIGHT - 20
+            # FALSEpos.centerx = screen.get_rect().centerx - 100 
+            # FALSEpos.centery = HEIGHT - 20
+            # screen.blit(TRUEtext, TRUEpos)
+            # screen.blit(FALSEtext, FALSEpos)
 
             # Scroll Question getting down
             POSITION = max(20,HEIGHT-game.time_remaining)
