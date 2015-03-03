@@ -112,7 +112,20 @@ class Game:
             for predicate,comment in self.list_of_mistakes:
                 gameStats += "When asked '"+predicate+"', you should answer '"+comment+"'.\n"        
         return gameStats
-            
+
+def userAcceptsAnswer(ev,pygame):
+    (x,y) = pygame.mouse.get_pos()
+    return (
+        (ev.type == pygame.MOUSEBUTTONDOWN and x > WIDTH/2)
+        or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT)    )
+    
+def userRefusesAnswer(ev,pygame):
+    (x,y) = pygame.mouse.get_pos()
+    return (
+        (ev.type == pygame.MOUSEBUTTONDOWN and x <= WIDTH/2)
+        or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_LEFT)    )
+
+
 def gameLoop(screen,game):
     # Graphic preparation
     color = backgroundColorWhenWaiting
@@ -164,23 +177,19 @@ def gameLoop(screen,game):
             
         # When the touchscreen or a key is pressed, process the answer
         # take left side as true and right side as false.
-        elif (ev.type == pygame.MOUSEBUTTONDOWN and x>WIDTH/2) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT):
-            print("Left Click")
+        elif userAcceptsAnswer(ev,pygame):
             if game.correctness:
-                print("Correct Answer!")
                 game.number_of_correct_answers += 1
                 color = backgroundColorWhenCorrect
                 game.time_remaining += TIME_REWARD
             else:
-                print("INCORRECT Answer!")
                 color = backgroundColorWhenIncorrect
                 game.number_of_incorrect_answers += 1
                 game.time_remaining -= TIME_PENALTY
                 game.list_of_mistakes.append((game.question,game.comment))
             (game.question, game.correctness, game.comment) = newQuestion()
             game.number_of_questions_asked += 1
-        elif (ev.type == pygame.MOUSEBUTTONDOWN and x<=WIDTH/2)  or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_LEFT):
-            print("Right Click")
+        elif userRefusesAnswer(ev,pygame):
             if not game.correctness:
                 print("Correct Answer!")
                 color = backgroundColorWhenCorrect
