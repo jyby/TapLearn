@@ -113,13 +113,13 @@ class Game:
                 gameStats += "When asked '"+predicate+"', you should answer '"+comment+"'.\n"        
         return gameStats
 
-def userAcceptsAnswer(ev,pygame):
+def learnerAcceptsAnswer(ev,pygame):
     (x,y) = pygame.mouse.get_pos()
     return (
         (ev.type == pygame.MOUSEBUTTONDOWN and x > WIDTH/2)
         or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT)    )
     
-def userRefusesAnswer(ev,pygame):
+def learnerRefusesAnswer(ev,pygame):
     (x,y) = pygame.mouse.get_pos()
     return (
         (ev.type == pygame.MOUSEBUTTONDOWN and x <= WIDTH/2)
@@ -177,7 +177,7 @@ def gameLoop(screen,game):
             
         # When the touchscreen or a key is pressed, process the answer
         # take left side as true and right side as false.
-        elif userAcceptsAnswer(ev,pygame):
+        elif learnerAcceptsAnswer(ev,pygame):
             if game.correctness:
                 game.number_of_correct_answers += 1
                 color = backgroundColorWhenCorrect
@@ -189,7 +189,7 @@ def gameLoop(screen,game):
                 game.list_of_mistakes.append((game.question,game.comment))
             (game.question, game.correctness, game.comment) = newQuestion()
             game.number_of_questions_asked += 1
-        elif userRefusesAnswer(ev,pygame):
+        elif learnerRefusesAnswer(ev,pygame):
             if not game.correctness:
                 print("Correct Answer!")
                 color = backgroundColorWhenCorrect
@@ -208,7 +208,7 @@ def gameLoop(screen,game):
         elif ev.type == pygame.MOUSEBUTTONUP or ev.type == pygame.KEYUP:
             color = backgroundColorWhenWaiting
 
-        # When the user hits back, ESCAPE is sent. Handle it and end
+        # When the learner hits back, ESCAPE is sent. Handle it and end
         # the game.
         elif ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
             break
