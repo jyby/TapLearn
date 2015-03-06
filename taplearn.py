@@ -126,12 +126,20 @@ def learnerRefusesAnswer(ev,pygame):
         or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_LEFT)    )
 
 
+
 def gameLoop(screen,game):
     # Graphic preparation
     color = backgroundColorWhenWaiting
     font = pygame.font.Font(None, 64)
     LEGENDfont = pygame.font.Font(None, 72)
 
+    def learnerIsCorrect():
+        game.time_remaining += TIME_REWARD
+        
+    def learnerIsInCorrect(): 
+        game.time_remaining -= TIME_PENALTY
+        game.list_of_mistakes.append((game.question,game.comment))
+       
     while game.time_remaining > 0:
 
         ev = pygame.event.wait()
@@ -145,22 +153,13 @@ def gameLoop(screen,game):
         if ev.type == TIMEREVENT:
             game.time_remaining -= 1
             screen.fill(color)
-            # WRITE True and False on bottom of screen.
+
+            # DRAW True and False indicators on bottom of screen.
             iconThumbsUpDown = pygame.image.load('Buttons/icons-thumbDownUp-Width480.png').convert()
             buttonThumbsUpDown = iconThumbsUpDown.get_rect()
             buttonThumbsUpDown.bottom = HEIGHT
             buttonThumbsUpDown.centerx = screen.get_rect().centerx
             screen.blit(iconThumbsUpDown, buttonThumbsUpDown)
-            # TRUEtext = LEGENDfont.render("TRUE", 1, textColorForCorrectLabel)
-            # TRUEpos = TRUEtext.get_rect()
-            # FALSEtext = LEGENDfont.render("FALSE", 1, textColorForIncorrectLabel)
-            # FALSEpos = TRUEtext.get_rect()
-            # TRUEpos.centerx = screen.get_rect().centerx + 100 
-            # TRUEpos.centery = HEIGHT - 20
-            # FALSEpos.centerx = screen.get_rect().centerx - 100 
-            # FALSEpos.centery = HEIGHT - 20
-            # screen.blit(TRUEtext, TRUEpos)
-            # screen.blit(FALSEtext, FALSEpos)
 
             # Scroll Question getting down
             POSITION = max(20,HEIGHT-game.time_remaining)
@@ -181,26 +180,22 @@ def gameLoop(screen,game):
             if game.correctness:
                 game.number_of_correct_answers += 1
                 color = backgroundColorWhenCorrect
-                game.time_remaining += TIME_REWARD
+                learnerIsCorrect()
             else:
-                color = backgroundColorWhenIncorrect
                 game.number_of_incorrect_answers += 1
-                game.time_remaining -= TIME_PENALTY
-                game.list_of_mistakes.append((game.question,game.comment))
+                color = backgroundColorWhenIncorrect
+                learnerIsInCorrect()
             (game.question, game.correctness, game.comment) = newQuestion()
             game.number_of_questions_asked += 1
         elif learnerRefusesAnswer(ev,pygame):
             if not game.correctness:
-                print("Correct Answer!")
                 color = backgroundColorWhenCorrect
                 game.number_of_correct_answers += 1
-                game.time_remaining += TIME_REWARD
+                learnerIsCorrect()
             else:
-                print("INCORRECT Answer!")
                 color = backgroundColorWhenIncorrect
                 game.number_of_incorrect_answers += 1
-                game.time_remaining -= TIME_PENALTY
-                game.list_of_mistakes.append((game.question,game.comment))
+                learnerIsInCorrect()
             (game.question, game.correctness, game.comment) = newQuestion()
             game.number_of_questions_asked += 1
             
