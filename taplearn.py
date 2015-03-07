@@ -61,7 +61,7 @@ textColorForDisabledMenuEntry = (210, 255, 210)
 
 # Difficulty
 TIME_REWARD = 30
-TIME_PENALTY = 60
+TIME_PENALTY = HEIGHT
 
 # Questions
 MIN_NUMBER = 5
