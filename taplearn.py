@@ -70,7 +70,6 @@ def Operation(x,y):
     return x*y
 operationLabel = "*"
 
-
 def newQuestion():
     """Returns a new question as a pair (predicate, correctness, comment)."""
     x = random.randint(MIN_NUMBER,MAX_NUMBER)
@@ -91,20 +90,16 @@ def noisyOperation(x, y):
         error = random.choice([-1,1])
         return random.choice([Operation((x+error),y),Operation(x,(y+error)),Operation(x,y+error)])
 
-class Game:
+class Stats:
     def __init__(self):
-        self.time_remaining = HEIGHT
-        self.time_remaining = HEIGHT
+        self.number_of_questions_asked = 1
         self.number_of_correct_answers = 0
         self.number_of_incorrect_answers = 0
-        self.number_of_questions_asked = 1
         self.list_of_mistakes = []
-        (self.question, self.correctness, self.comment) = newQuestion()
-
-    def stats(self):
+    def toString(self):
         gameStats = ""
         gameStats += "Nb of questions asked: "+str(self.number_of_questions_asked)+"\n"
-        gameStats += "Nb of questions not answered: "+str(self.number_of_questions_asked-self.number_of_incorrect_answers-self.number_of_correct_answers)+"\n"
+        gameStats += "Nb of questions answered: "+str(self.number_of_incorrect_answers+self.number_of_correct_answers)+"\n"
         gameStats += "Nb of correct answers: "+str(self.number_of_correct_answers)+"\n"
         gameStats += "Nb of incorrect answers: "+str(self.number_of_incorrect_answers)+"\n"
         if len(self.list_of_mistakes)>0:
@@ -112,6 +107,14 @@ class Game:
             for predicate,comment in self.list_of_mistakes:
                 gameStats += "When asked '"+predicate+"', you should answer '"+comment+"'.\n"        
         return gameStats
+
+class Game:
+    def __init__(self):
+        self.time_remaining = HEIGHT
+        self.time_remaining = HEIGHT
+        self.stats = Stats() 
+        (self.question, self.correctness, self.comment) = newQuestion()
+
 
 def learnerAcceptsAnswer(ev,pygame):
     (x,y) = pygame.mouse.get_pos()
@@ -136,7 +139,7 @@ def gameLoop(screen,game):
         
     def learnerIsInCorrect(): 
         game.time_remaining -= TIME_PENALTY
-        game.list_of_mistakes.append((game.question,game.comment))
+        game.stats.list_of_mistakes.append((game.question,game.comment))
        
     while game.time_remaining > 0:
 
@@ -176,26 +179,26 @@ def gameLoop(screen,game):
         # take left side as true and right side as false.
         elif learnerAcceptsAnswer(ev,pygame):
             if game.correctness:
-                game.number_of_correct_answers += 1
+                game.stats.number_of_correct_answers += 1
                 color = backgroundColorWhenCorrect
                 learnerIsCorrect()
             else:
-                game.number_of_incorrect_answers += 1
+                game.stats.number_of_incorrect_answers += 1
                 color = backgroundColorWhenIncorrect
                 learnerIsInCorrect()
             (game.question, game.correctness, game.comment) = newQuestion()
-            game.number_of_questions_asked += 1
+            game.stats.number_of_questions_asked += 1
         elif learnerRefusesAnswer(ev,pygame):
             if not game.correctness:
                 color = backgroundColorWhenCorrect
-                game.number_of_correct_answers += 1
+                game.stats.number_of_correct_answers += 1
                 learnerIsCorrect()
             else:
                 color = backgroundColorWhenIncorrect
-                game.number_of_incorrect_answers += 1
+                game.stats.number_of_incorrect_answers += 1
                 learnerIsInCorrect()
             (game.question, game.correctness, game.comment) = newQuestion()
-            game.number_of_questions_asked += 1
+            game.stats.number_of_questions_asked += 1
             
         # When it's released, change back the color of the background 
         elif ev.type == pygame.MOUSEBUTTONUP or ev.type == pygame.KEYUP:
@@ -206,7 +209,7 @@ def gameLoop(screen,game):
         elif ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE:
             break
     if(game.time_remaining <=0):
-        print(game.stats())
+        print(game.stats.toString())
         game = None
     return game
     
@@ -311,7 +314,7 @@ def menuLoop(screen,game):
         elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_resume.collidepoint(pygame.mouse.get_pos()))):
             mode = "play"
         elif (game and (ev.type == pygame.MOUSEBUTTONDOWN and  button_logoLearn.collidepoint(pygame.mouse.get_pos()))):
-            print(str(game.stats()))
+            print(str(game.stats.toString()()))
         elif ((ev.type == pygame.MOUSEBUTTONDOWN and  button_quit.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE)):
             mode = "exit"
     return mode, game
