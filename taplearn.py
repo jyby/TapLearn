@@ -36,7 +36,7 @@ authors and should not be interpreted as representing official policies, either 
 or implied, of Jeremy Barbay.
 """
 
-VERSION = 2
+VERSION = 2.1
 
 import pygame
 try:
@@ -116,29 +116,30 @@ class Game:
         (self.question, self.correctness, self.comment) = newQuestion()
 
 
-def learnerAcceptsAnswer(ev,pygame):
-    (x,y) = pygame.mouse.get_pos()
-    return (
-        (ev.type == pygame.MOUSEBUTTONDOWN and x > WIDTH/2)
-        or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT)    )
-    
-def learnerRefusesAnswer(ev,pygame):
-    (x,y) = pygame.mouse.get_pos()
-    return (
-        (ev.type == pygame.MOUSEBUTTONDOWN and x <= WIDTH/2)
-        or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_LEFT)    )
-
 def gameLoop(screen,game):
     # Graphic preparation
     color = backgroundColorWhenWaiting
     font = pygame.font.Font(None, 64)
     LEGENDfont = pygame.font.Font(None, 72)
 
+    def learnerAcceptsAnswer(ev,pygame):
+        (x,y) = pygame.mouse.get_pos()
+        return (
+            (ev.type == pygame.MOUSEBUTTONDOWN and x > WIDTH/2)
+            or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT)    )
+        
+    def learnerRefusesAnswer(ev,pygame):
+        (x,y) = pygame.mouse.get_pos()
+        return (
+            (ev.type == pygame.MOUSEBUTTONDOWN and x <= WIDTH/2)
+            or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_LEFT)    )
+
+
     def learnerIsCorrect():
         game.time_remaining += TIME_REWARD
         
     def learnerIsInCorrect(): 
-        game.time_remaining -= TIME_PENALTY
+        game.time_remaining -= 2*TIME_PENALTY
         game.stats.list_of_mistakes.append((game.question,game.comment))
        
     while game.time_remaining > 0:
