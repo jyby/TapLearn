@@ -136,10 +136,10 @@ def gameLoop(screen,game):
 
 
     def learnerIsCorrect():
-        game.time_remaining += TIME_REWARD
+        game.time_remaining = HEIGHT
         
     def learnerIsInCorrect(): 
-        game.time_remaining -= 2*TIME_PENALTY
+        game.time_remaining = 0
         game.stats.list_of_mistakes.append((game.question,game.comment))
        
     while game.time_remaining > 0:
