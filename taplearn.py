@@ -92,7 +92,7 @@ def noisyOperation(x, y):
 
 class Stats:
     def __init__(self):
-        self.number_of_questions_asked = 1
+        self.number_of_questions_asked = 0
         self.number_of_correct_answers = 0
         self.number_of_incorrect_answers = 0
         self.list_of_mistakes = []
