@@ -3,3 +3,62 @@
   Once finished, <<<TapLearn>>> should be a generic example of pedagogical application with a touch interface, to be used to study the effect of various features on both persistence and learning. In its most basic version, the application downloads a sequence of predicates from a server, present them to the learner in a random order, each to be validated or refuted by the learner, gives feedback to the user and submits the user's answers to a central server for later studies. The features envisioned include the addition of animations, colors, sounds, spaced memorization techniques. The studies envisioned include the effect of those features on <<<persistence>>> (how frequently and how long the learner uses the application) and <<<learning>>> (how fast the learner progresses in his/her learning).
 
 For more information, see the wiki page of the project at https://github.com/jyby/taplearn/wiki
+
+** Milestones for the basic application [12%]
+
+   1. [X] Prototype with game interface:
+      1) [X] Randomly generate predicates on addition and/or multiplications,
+      2) [X] presents predicates, scrolling from the top of the screen to the bottom, 
+      3) [X] detects the answer from the learner,
+      4) [X] gives feedback to the learner.
+      5) [X] REFACTORING
+   2. [-] Prototype installed on an Android device
+      1) [X] INSTALL Python 2.7 (PGS4A is not compatible with Python 3 at this time.)
+      2) [X] INSTALL Java Development Kit. 
+      3) [X] INSTALL Android Device Drivers.
+      4) [ ] INSTALL PyGame for Android (PGS4A) following instructions from http://pygame.renpy.org/
+      5) [X] REFACTORING
+   3. [-] Prototype with three pages:
+      1) [X] page "Menu"
+      2) [X] page "Game" 
+      3) [X] page "Stats"
+      4) [ ] page "Info"
+      5) [ ] REFACTORING
+   4. [ ] Prototype with improved Game Play:
+      1) [ ] Each challenges consists of a random mix of two pairs.
+	 - a mix of two flashcards (A,A') and (B,B')
+	 - a random choice between proposals which are
+	   - correct: (A,A') or (B,B') and
+	   - incorrect: (A,B') or (B,A') 
+      2) [ ] First side (A or B) of Flashcard scrolls down (maybe oscillatin as autumn leaf)
+      3) [ ] when learner press screen, the proposed side (A' or B') of the flashcard is shown
+      4) [ ] if the learner depress
+	 - on the same spot, back to initial state
+	 - on the right, he accepts the proposal
+	 - on the left, he refuses it
+	 - on the bottom, he skips it because he does not know
+	 - on the top, he flags it as inadequate
+      5) [ ] after having slided,
+	 - the correct answer(s) are shown:
+	   - Only (A,A') or (B,B') if that was the proposal
+	   - Both (A,A') and (B,B') if the proposal was a mix.
+	 - the graphic interface makes it clear if the learner's answer was correct.
+	 - if the answer was incorrect, the interface waits for another click from the learner
+      6) [ ] REFACTORING
+   5. [ ] Prototype with local database
+      1) [ ] initially fill the local database with randomly generated predicates
+      2) [ ] request predicates from the local databases
+      3) [ ] update statistics of each predicates in the local database
+      4) [ ] REFACTORING
+   6. [ ] Prototype with Network connection
+      1) [ ] add button "Synch"
+      2) [ ] Query predicates from server
+      3) [ ] Send statistics to server
+      4) [ ] REFACTORING
+   7. [ ] Prototype with Flash Cards
+      1) [ ] Show at first one face of the card, then
+      2) [ ] the second face of the card when the learner press a key
+      3) [ ] ?Load flash cards from an Anki Deck?
+      4) [ ] REFACTORING
+   8. [ ] Release of Beta and Testing by first users
+
