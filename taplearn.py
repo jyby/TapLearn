@@ -5,7 +5,7 @@ By the end of the first phase of its development, <<<TapLearn>>> should be a gen
 
 by Jeremy "Le JyBy" Barbay.
 
-
+Sources available on https://github.com/jyby/TapLearn/
 
 Simplified BSD License:
 
@@ -58,6 +58,15 @@ textColorForCorrectLabel = (10, 210, 10)
 textColorForIncorrectLabel = (210, 10, 10)
 textColorForMenuEntry = (10, 210, 10)
 textColorForDisabledMenuEntry = (210, 255, 210)
+creditStrings = [
+    "TapLearn", "",
+    "Originally by Jeremy 'Le JyBy' Barbay",
+    "Sources and Information are available on",
+    "https://github.com/jyby/TapLearn/",
+    "",
+    "Code under Simplified BSD License",
+    "Copyright 2015 Jeremy 'Le JyBy' Barbay"
+]
 
 # Difficulty
 TIME_REWARD = 30
@@ -227,7 +236,8 @@ def menuLoop(screen,game):
         elif (ev.type == pygame.MOUSEBUTTONUP) or (ev.type == pygame.KEYUP):
             tapPressed = None
         elif (ev.type == pygame.MOUSEBUTTONDOWN and  button_logoSignature.collidepoint(pygame.mouse.get_pos())):
-            print("About: By Jeremy 'Le JyBy' Barbay")
+            print("Credits: By Jeremy 'Le JyBy' Barbay")
+            mode = "credits"
         elif (ev.type == pygame.MOUSEBUTTONDOWN and  button_new_game.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_RIGHT):
             print("New Game")
             game = Game();
@@ -388,6 +398,58 @@ def statsLoop(screen,game):
             mode = "menu"
     return mode, game
 
+def creditsLoop(screen,game):
+    mode = "waiting"
+    tapPressed = None
+    while mode == "waiting":
+
+        ev = pygame.event.wait()
+        # Android-specific:
+        if android:
+            if android.check_pause():
+                android.wait_for_resume()
+
+        screen.fill(backgroundColorWhenWaiting)
+
+        # WRITE on Menu  screen.
+        font = pygame.font.Font(None, 64)
+
+        cursor_y = 0
+
+        if tapPressed:
+            logoTap = pygame.image.load('Logos/logo-TapWithFingerPressed-Width480.png').convert()
+        else:
+            logoTap = pygame.image.load('Logos/logo-TapWithFinger-Width480.png').convert()
+        button_logoTap = logoTap.get_rect()
+        button_logoTap.top = cursor_y
+        button_logoTap.left = 0
+        screen.blit(logoTap, button_logoTap)
+        cursor_y += button_logoTap.height
+
+        logoLearn = pygame.image.load('Logos/logo-Learn-Width480.png').convert()
+        button_logoLearn = logoLearn.get_rect()
+        button_logoLearn.top = cursor_y
+        button_logoLearn.left = 0
+        screen.blit(logoLearn, button_logoLearn)
+        cursor_y += button_logoLearn.height
+
+        font = pygame.font.Font(None, 32)
+        for s in creditStrings:
+            text = font.render(s, 1, textColorForMenuEntry)
+            rect =  text.get_rect()
+            rect.left = screen.get_rect().left
+            rect.top = cursor_y
+            screen.blit(text, rect)
+            cursor_y += rect.height
+
+
+        # Blit everything to the screen
+        screen.blit(screen, (0, 0))
+        pygame.display.flip()
+        if  (ev.type == pygame.KEYDOWN):
+            mode = "menu"
+    return mode, game
+
     
             
 # Main program 
@@ -420,6 +482,8 @@ def main():
             mode,game = gameLoop(screen,game)
         elif mode == "stats":
             mode,game = statsLoop(screen,game)
+        elif mode == "credits":
+            mode,game = creditsLoop(screen,game)
 
     print("GAME (is) OVER")
 
