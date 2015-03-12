@@ -448,6 +448,16 @@ def creditsLoop(screen,game):
         pygame.display.flip()
         if  (ev.type == pygame.KEYDOWN):
             mode = "menu"
+
+        if (ev.type == pygame.MOUSEBUTTONDOWN and  button_logoTap.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_DOWN):
+            tapPressed = 1
+        elif (ev.type == pygame.MOUSEBUTTONUP) or (ev.type == pygame.KEYUP):
+            tapPressed = None
+        elif ((ev.type == pygame.MOUSEBUTTONDOWN and  button_quit.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE)):
+            print("Exit")
+            mode = "exit"
+
+            
     return mode, game
 
     
