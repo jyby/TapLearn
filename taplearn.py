@@ -394,7 +394,13 @@ def statsLoop(screen,game):
         # Blit everything to the screen
         screen.blit(screen, (0, 0))
         pygame.display.flip()
-        if  (ev.type == pygame.KEYDOWN):
+
+        # Manage events
+        if (ev.type == pygame.MOUSEBUTTONDOWN and  button_logoTap.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_DOWN):
+            tapPressed = 1
+        elif (ev.type == pygame.MOUSEBUTTONUP) or (ev.type == pygame.KEYUP):
+            tapPressed = None
+        elif ev.type == pygame.KEYDOWN or ev.type == pygame.MOUSEBUTTONDOWN:
             mode = "menu"
     return mode, game
 
@@ -446,17 +452,14 @@ def creditsLoop(screen,game):
         # Blit everything to the screen
         screen.blit(screen, (0, 0))
         pygame.display.flip()
-        if  (ev.type == pygame.KEYDOWN):
-            mode = "menu"
 
+        # Manage events
         if (ev.type == pygame.MOUSEBUTTONDOWN and  button_logoTap.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_DOWN):
             tapPressed = 1
         elif (ev.type == pygame.MOUSEBUTTONUP) or (ev.type == pygame.KEYUP):
             tapPressed = None
-        elif ((ev.type == pygame.MOUSEBUTTONDOWN and  button_quit.collidepoint(pygame.mouse.get_pos())) or (ev.type == pygame.KEYDOWN and ev.key == pygame.K_ESCAPE)):
-            print("Exit")
-            mode = "exit"
-
+        elif ev.type == pygame.KEYDOWN or ev.type == pygame.MOUSEBUTTONDOWN:
+            mode = "menu"
             
     return mode, game
 
