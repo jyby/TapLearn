@@ -1,21 +1,25 @@
 * TapLearn : A template for Pedagogical Games in Python/PyGame under Android
+** Termination
 
-  Once finished, <<<TapLearn>>> should be a generic example of pedagogical application with a touch interface, to be used to study the effect of various features on both persistence and learning. In its most basic version, the application downloads a sequence of predicates from a server, present them to the learner in a random order, each to be validated or refuted by the learner, gives feedback to the user and submits the user's answers to a central server for later studies. The features envisioned include the addition of animations, colors, sounds, spaced memorization techniques. The studies envisioned include the effect of those features on <<<persistence>>> (how frequently and how long the learner uses the application) and <<<learning>>> (how fast the learner progresses in his/her learning).
+   - The development of the project TAPLEARN using the library PyGame was stopped on [2015-03-17 Tue], because
+     1) The development of the library PyGame for Android is not active anymore, and that it was replaced by kivy, which supports other platforms than Android, such as kivy; and
+     2) The name taplearn was already taken by http://wwww.taplearn.com.
+
+   - As a conclusion, it was decided to
+     1) Start a new project with the  name of =TapMemory=, which 
+       	- does not seem to be taken yet and
+       	- is closer anyway to the memory-related objectives of the application; and
+     2) to restart it from scratch as another github project
+       	- using the library kivy,
+       	- potentially reusing the milestones and references developped for TapLearn, and
+       	- maybe using the project ankidroid, also on github, to better interface it with the flashcards from Anki.
+
+
+** Objectives
+  Once finished, <<<TapLearn>>> should have been a generic example of pedagogical application with a touch interface, to be used to study the effect of various features on both persistence and learning. In its most basic version, the application downloads a sequence of predicates from a server, present them to the learner in a random order, each to be validated or refuted by the learner, gives feedback to the user and submits the user's answers to a central server for later studies. The features envisioned include the addition of animations, colors, sounds, spaced memorization techniques. The studies envisioned include the effect of those features on <<<persistence>>> (how frequently and how long the learner uses the application) and <<<learning>>> (how fast the learner progresses in his/her learning).
 
 For more information, see the wiki page of the project at https://github.com/jyby/taplearn/wiki
 
-** TERMINATION
-
-   - While developping TapLearn, it turned out that
-     1) The name taplearn was already taken by http://wwww.taplearn.com
-     2) The development of the library PyGame for Android is not active anymore, and that it was replaced by kivy, which supports other platforms than Android, such as kivy.
-   - As a conclusion, it was decided to
-     1) Change the name of the application to =TapMemory=, which 
-        - does not seem to be taken yet and
-	- is closer anyway to the memory-related objectives of the application; and
-     2) to restart it from scratch as another github project
-	- using the library kivy,
-	- potentially reusing the milestones and references developped for TapLearn.
 
 ** Milestones for the basic application [28%]
 
