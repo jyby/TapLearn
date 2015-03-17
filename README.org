@@ -13,7 +13,9 @@
        	- using the library kivy,
        	- potentially reusing the milestones and references developped for TapLearn, and
        	- maybe using the project ankidroid, also on github, to better interface it with the flashcards from Anki.
-
+     3) Leave the sources of this project available, so that to be reused 
+	- if PyGame gets new support or
+	- if someone wishes to develop a similar game just for linux.
 
 ** Objectives
   Once finished, <<<TapLearn>>> should have been a generic example of pedagogical application with a touch interface, to be used to study the effect of various features on both persistence and learning. In its most basic version, the application downloads a sequence of predicates from a server, present them to the learner in a random order, each to be validated or refuted by the learner, gives feedback to the user and submits the user's answers to a central server for later studies. The features envisioned include the addition of animations, colors, sounds, spaced memorization techniques. The studies envisioned include the effect of those features on <<<persistence>>> (how frequently and how long the learner uses the application) and <<<learning>>> (how fast the learner progresses in his/her learning).
